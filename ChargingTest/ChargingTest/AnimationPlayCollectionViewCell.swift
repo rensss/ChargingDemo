@@ -15,7 +15,8 @@ import Tiercel
 
 class AnimationPlayCollectionViewCell: UICollectionViewCell {
     
-    var playerController : AVPlayerViewController? = nil
+    // The AVPlayer
+    var videoPlayer: AVPlayer? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,49 +37,53 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
         
-        
-        
-    }
-    
-    // MARK:- setter
-    var path: String? {
-        didSet {
-            player?.play()
+        contentView.addSubview(playerView)
+        playerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
+    
+    // MARK:-- play
+    func playVideo() {
+        // path of the video in the bundle
+        guard let string = try? self.battery?.previewVideo?.url.asURL().lastPathComponent else {
+            myPrint("lastPathComponent not exist")
+            return
+        }
+        let pathStr = appDelegate.sessionManager.cache.downloadFilePath + "/" + string
+//        myPrint(pathStr)
+        
+        // set the video player with the path
+        videoPlayer = AVPlayer(url: URL(fileURLWithPath: pathStr))
+        // play the video now!
+        videoPlayer?.playImmediately(atRate: 1)
+        // setup the AVPlayer as the player
+        playerView.player = videoPlayer
+    }
+    
+    func stopVideo() {
+        playerView.player?.pause()
+    }
+    
+    // The PlayerView
+    var playerView: PlayerView = {
+        var player = PlayerView()
+        player.backgroundColor = .clear
+        return player
+    }()
+    
+    // MARK:- setter
     var battery: Battery? {
         didSet {
+            download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url)
             if let url = battery?.previewImage?.url {
                 coverImage.kf.setImage(with: URL(string: url))
             }
-            
-            if let url = battery?.previewVideo?.url {
-                myPrint(url)
-//                let task = sessionManager.download(url)
-            }
-            
         }
     }
     
     // MARK:- lazy
-    lazy var player: AVPlayer? = {
-        guard let path = Bundle.main.path(forResource: path, ofType: nil) else { return nil }
-        let player = AVPlayer(url: URL(fileURLWithPath: path))
-        playerController = AVPlayerViewController()
-        if let p = playerController {
-            p.player = player
-            p.view.frame = CGRect(x: 0, y: 0, width: self.width, height: self.height)
-            self.viewController().addChild(p)
-            self.viewController().view.addSubview(p.view)
-        }
-        if let path = self.path {
-            let p = AVPlayer(url: URL(fileURLWithPath: path))
-            return p
-        }
-        return nil
-    }()
-    
     lazy var coverImage: UIImageView = {
         let c = UIImageView()
         c.contentMode = .scaleAspectFill
