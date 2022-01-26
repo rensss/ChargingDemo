@@ -20,39 +20,58 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        sessionManager = appDelegate.sessionManager
-        
-        setupManager()
-        
-        download(sessionManager: sessionManager, url: battery?.previewVideo?.url)
         
         view.addSubview(playerView)
         playerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        let b = UIButton()
+        b.setImage(UIImage(named: "ic_close"), for: .normal)
+        b.addTarget(self, action: #selector(btnClick(btn:)), for: .touchUpInside)
+        view.addSubview(b)
+        b.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(45)
+            make.leading.equalToSuperview().offset(25)
+            make.width.height.equalTo(40)
+        }
+        sessionManager = appDelegate.sessionManager
+        
+        if let name = try? battery?.video?.url.asURL().lastPathComponent {
+            download(sessionManager: appDelegate.sessionManager, url: battery?.video?.url, filename: "or_" + name)
+        } else if let name = try? battery?.previewVideo?.url.asURL().lastPathComponent {
+            download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: "or_" + name)
+        }
+        
+        setupManager()
+    }
+    
+    // MARK:- event
+    @objc func btnClick(btn: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK:- func
     func setupManager() {
         // 设置 manager 的回调
-        sessionManager?.progress { [weak self] (manager) in
-//            self?.updateUI()
-        }.completion { [weak self] manager in
-//            self?.updateUI()
+        sessionManager?.completion(handler: { [weak self] manager in
             if manager.status == .succeeded {
                 // 下载成功
-                if let string = try? self?.battery?.previewVideo?.url.asURL().lastPathComponent {
-                    let pathStr = manager.cache.downloadFilePath + "/" + string
-                    myPrint(pathStr)
+                if let name = try? self?.battery?.video?.url.asURL().lastPathComponent {
+                    let pathStr = manager.cache.downloadFilePath + "/" + "or_" + name
+//                    myPrint(pathStr)
+                    self?.path = pathStr
+                    self?.playVideo()
+                } else if let name = try? self?.battery?.previewVideo?.url.asURL().lastPathComponent {
+                    let pathStr = manager.cache.downloadFilePath + "/" + "or_" + name
+//                    myPrint(pathStr)
                     self?.path = pathStr
                     self?.playVideo()
                 }
             } else {
                 // 其他状态
             }
-        }
+        })
     }
     
     func playVideo() {
@@ -76,6 +95,7 @@ class DetailViewController: UIViewController {
     lazy var playerView: PlayerView = {
         var player = PlayerView()
         player.backgroundColor = .clear
+        player.playerLayer.videoGravity = .resizeAspect
         return player
     }()
 }

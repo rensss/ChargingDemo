@@ -21,7 +21,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.withRandom()
+//        self.backgroundColor = UIColor.withRandom()
         
         setupUI()
     }
@@ -52,7 +52,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
             return
         }
         let pathStr = appDelegate.sessionManager.cache.downloadFilePath + "/" + string
-//        myPrint(pathStr)
+        myPrint(pathStr)
         
         // set the video player with the path
         videoPlayer = AVPlayer(url: URL(fileURLWithPath: pathStr))
@@ -60,6 +60,8 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         videoPlayer?.playImmediately(atRate: 1)
         // setup the AVPlayer as the player
         playerView.player = videoPlayer
+        
+//        coverImage.image = nil
     }
     
     func stopVideo() {
@@ -70,13 +72,16 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     var playerView: PlayerView = {
         var player = PlayerView()
         player.backgroundColor = .clear
+        player.playerLayer.videoGravity = .resizeAspectFill
         return player
     }()
     
     // MARK:- setter
     var battery: Battery? {
         didSet {
-            download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url)
+            guard let name = try? battery?.previewVideo?.url.asURL().lastPathComponent else { return }
+            
+            download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: name)
             if let url = battery?.previewImage?.url {
                 coverImage.kf.setImage(with: URL(string: url))
             }

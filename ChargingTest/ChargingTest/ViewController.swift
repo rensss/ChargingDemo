@@ -26,7 +26,7 @@ public func myPrint(_ items: Any..., filename: String = #file, function: String 
 
 let cellReuseridentifier = "cellReuseridentifier"
 
-public func download(sessionManager: SessionManager?, url: String?) {
+public func download(sessionManager: SessionManager?, url: String?, filename: String?) {
     if let url = url {
         myPrint(url)
         
@@ -34,9 +34,7 @@ public func download(sessionManager: SessionManager?, url: String?) {
         
         if downloadURLStrings.contains(where: { $0 == url}) { return }
         
-        guard let name = try? url.asURL().lastPathComponent else { return }
-        
-        sessionManager?.download(url, fileName: name)
+        sessionManager?.download(url, fileName: filename)
     }
 }
 
@@ -130,7 +128,10 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DetailViewController()
-        vc.battery = self.dataArray?[indexPath.item]
+        vc.modalPresentationStyle = .fullScreen
+        if let model = self.model?.data[indexPath.section].batteries[indexPath.item] {
+            vc.battery = model
+        }
         self.present(vc, animated: true, completion: nil)
     }
     
