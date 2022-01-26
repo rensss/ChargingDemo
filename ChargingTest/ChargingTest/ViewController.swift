@@ -34,7 +34,9 @@ public func download(sessionManager: SessionManager?, url: String?) {
         
         if downloadURLStrings.contains(where: { $0 == url}) { return }
         
-        sessionManager?.download(url, to: )
+        guard let name = try? url.asURL().lastPathComponent else { return }
+        
+        sessionManager?.download(url, fileName: name)
     }
 }
 
