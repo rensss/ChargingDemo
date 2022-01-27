@@ -10,6 +10,7 @@ import Tiercel
 import AVFoundation
 import AVKit
 import R_category
+import MBProgressHUD
 
 class DetailViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class DetailViewController: UIViewController {
     var battery: Battery?
     var path: String?
     var videoPlayer: AVPlayer? = nil
+    var videoTask: DownloadTask?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +44,12 @@ class DetailViewController: UIViewController {
         
         setupManager()
         
+        MBProgressHUD.xnShowIndicatorMessage("dowloading...")
+        
         if let name = try? battery?.video?.url.asURL().lastPathComponent {
-            download(sessionManager: appDelegate.sessionManager, url: battery?.video?.url, filename: "or_" + name)
+            self.videoTask = download(sessionManager: appDelegate.sessionManager, url: battery?.video?.url, filename: "or_" + name)
         } else if let name = try? battery?.previewVideo?.url.asURL().lastPathComponent {
-            download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: "or_" + name)
+            self.videoTask = download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: "or_" + name)
         }
     }
     
@@ -58,6 +62,24 @@ class DetailViewController: UIViewController {
     func setupManager() {
         // 设置 manager 的回调
         sessionManager?.completion(handler: { [weak self] manager in
+            switch manager.status {
+            case .succeeded:
+                // 其他状态
+                myPrint("---- succeeded")
+            case .failed:
+                // 其他状态
+                myPrint("---- failed")
+            case .canceled:
+                // 其他状态
+                myPrint("---- canceled")
+            case .waiting:
+                // 其他状态
+                myPrint("---- waiting")
+            default:
+                // 其他状态
+                myPrint("---- 其他状态")
+            }
+            
             if manager.status == .succeeded {
                 // 下载成功
                 if let name = try? self?.battery?.video?.url.asURL().lastPathComponent {
@@ -72,6 +94,7 @@ class DetailViewController: UIViewController {
                     self?.playVideo()
                 }
             } else {
+//                MBProgressHUD.xnShowMessageWithHideAfter("download failed", timeInterval: 2)
                 // 其他状态
                 myPrint("---- download failed")
             }
@@ -79,8 +102,13 @@ class DetailViewController: UIViewController {
     }
     
     func playVideo() {
+        MBProgressHUD.xnHideHUD()
+        
         // path of the video in the bundle
-        guard let pathStr = self.path else { return }
+        guard let pathStr = self.path else {
+            myPrint("path wrong!")
+            return
+        }
 //        myPrint(pathStr)
         
         // set the video player with the path
