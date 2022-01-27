@@ -27,14 +27,18 @@ public func myPrint(_ items: Any..., filename: String = #file, function: String 
 let cellReuseridentifier = "cellReuseridentifier"
 
 public func download(sessionManager: SessionManager?, url: String?, filename: String?) {
-    if let url = url {
-        myPrint(url)
+    if let url = url, let filename = filename {
+        myPrint("---- download url: " + url)
         
-        guard let downloadURLStrings = sessionManager?.tasks.map( { $0.url.absoluteString } ) else { return }
+//        guard let downloadURLStrings = sessionManager?.tasks.map( { $0.url.absoluteString } ) else { return }
+//
+//        if downloadURLStrings.contains(where: { $0 == url}) { return }
         
-        if downloadURLStrings.contains(where: { $0 == url}) { return }
+        sessionManager?.multiDownload([url], fileNames: [filename])
         
-        sessionManager?.download(url, fileName: filename)
+//        sessionManager?.download(url, fileName: filename, handler: { task in
+//            myPrint(task.status)
+//        })
     }
 }
 

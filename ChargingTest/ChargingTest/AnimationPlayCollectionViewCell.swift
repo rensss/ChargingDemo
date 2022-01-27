@@ -51,6 +51,9 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
             myPrint("lastPathComponent not exist")
             return
         }
+        
+        self.playerView.isHidden = false
+        
         let pathStr = appDelegate.sessionManager.cache.downloadFilePath + "/" + string
         myPrint(pathStr)
         
@@ -82,8 +85,19 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
             guard let name = try? battery?.previewVideo?.url.asURL().lastPathComponent else { return }
             
             download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: name)
+            
             if let url = battery?.previewImage?.url {
-                coverImage.kf.setImage(with: URL(string: url))
+                coverImage.contentMode = .scaleAspectFit
+                coverImage.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "placeholder")) { result in
+                    switch result {
+                    case .success(let res):
+                        self.coverImage.contentMode = .scaleAspectFill
+                        myPrint("---- \(String(describing: res.source.url?.absoluteString))")
+                        self.playerView.isHidden = true
+                    case .failure(let error):
+                        myPrint(error)
+                    }
+                }
             }
         }
     }

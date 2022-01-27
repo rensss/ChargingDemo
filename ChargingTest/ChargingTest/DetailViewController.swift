@@ -21,6 +21,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .black
+        
         view.addSubview(playerView)
         playerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -35,15 +37,16 @@ class DetailViewController: UIViewController {
             make.leading.equalToSuperview().offset(25)
             make.width.height.equalTo(40)
         }
+        
         sessionManager = appDelegate.sessionManager
+        
+        setupManager()
         
         if let name = try? battery?.video?.url.asURL().lastPathComponent {
             download(sessionManager: appDelegate.sessionManager, url: battery?.video?.url, filename: "or_" + name)
         } else if let name = try? battery?.previewVideo?.url.asURL().lastPathComponent {
             download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: "or_" + name)
         }
-        
-        setupManager()
     }
     
     // MARK:- event
@@ -70,6 +73,7 @@ class DetailViewController: UIViewController {
                 }
             } else {
                 // 其他状态
+                myPrint("---- download failed")
             }
         })
     }
