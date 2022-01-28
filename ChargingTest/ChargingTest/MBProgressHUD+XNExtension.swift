@@ -11,26 +11,18 @@ import MBProgressHUD
 extension MBProgressHUD {
     
     public static func xnShowIndicator() {
-        MBProgressHUD.xnShowIndicatorWithHideAfterYOffset(timeInterval: nil)
-    }
-    
-    public static func xnShowMessage(_ message: String?) {
-        MBProgressHUD.xnShowMessageWithHideAfterYOffset(message)
+        MBProgressHUD.xnShowIndicatorWithHideAfterYOffset(nil)
     }
     
     public static func xnShowIndicatorMessage(_ message: String?) {
-        MBProgressHUD.xnShowIndicatorWithHideAfterYOffset(message, timeInterval: nil)
+        MBProgressHUD.xnShowIndicatorWithHideAfterYOffset(message)
     }
     
-    public static func xnShowIndicatorWithHideAfter(_ message: String?, timeInterval: TimeInterval) {
+    public static func xnShowIndicatorWithHideAfter(_ message: String?, timeInterval: TimeInterval? = nil) {
         MBProgressHUD.xnShowIndicatorWithHideAfterYOffset(message, timeInterval: timeInterval)
     }
     
-    public static func xnShowMessageWithHideAfter(_ message: String?, timeInterval: TimeInterval) {
-        MBProgressHUD.xnShowMessageWithHideAfterYOffset(message, timeInterval: timeInterval)
-    }
-    
-    public static func xnShowIndicatorWithHideAfterYOffset(_ message: String? = nil, timeInterval: TimeInterval?, yOffset: CGFloat = 0.0, showView: UIView? = UIWindow.xnKeyWindow()) {
+    public static func xnShowIndicatorWithHideAfterYOffset(_ message: String? = nil, timeInterval: TimeInterval? = nil, yOffset: CGFloat = 0.0, showView: UIView? = UIWindow.xnKeyWindow()) {
         xnHideHUD(showView)
         DispatchQueue.main.async(execute: {
             if let view = showView {
@@ -45,6 +37,14 @@ extension MBProgressHUD {
                 hud.offset = offset
             }
         })
+    }
+    
+    public static func xnShowMessage(_ message: String?) {
+        MBProgressHUD.xnShowMessageWithHideAfterYOffset(message)
+    }
+    
+    public static func xnShowMessageWithHideAfter(_ message: String?, timeInterval: TimeInterval) {
+        MBProgressHUD.xnShowMessageWithHideAfterYOffset(message, timeInterval: timeInterval)
     }
     
     public static func xnShowMessageWithHideAfterYOffset(_ message: String? = nil, timeInterval: TimeInterval = 1.0, yOffset: CGFloat = 0.0, showView: UIView? = UIWindow.xnKeyWindow()) {

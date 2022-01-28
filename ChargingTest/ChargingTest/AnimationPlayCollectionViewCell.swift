@@ -17,6 +17,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     
     // The AVPlayer
     var videoPlayer: AVPlayer? = nil
+    var task: Tiercel.DownloadTask?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,7 +85,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         didSet {
             guard let name = try? battery?.previewVideo?.url.asURL().lastPathComponent else { return }
             
-            download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: name)
+            task = download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: name)
             
             if let url = battery?.previewImage?.url {
                 coverImage.contentMode = .scaleAspectFit
@@ -92,7 +93,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
                     switch result {
                     case .success(let res):
                         self.coverImage.contentMode = .scaleAspectFill
-                        myPrint("---- \(String(describing: res.source.url?.absoluteString))")
+//                        myPrint("---- \(String(describing: res.source.url?.absoluteString))")
                         self.playerView.isHidden = true
                     case .failure(let error):
                         myPrint(error)

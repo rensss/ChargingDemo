@@ -18,12 +18,17 @@ class DetailViewController: UIViewController {
     var battery: Battery?
     var path: String?
     var videoPlayer: AVPlayer? = nil
-    var videoTask: DownloadTask?
+    var videoTask: Tiercel.DownloadTask?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .black
+        view.backgroundColor = .white
+        
+        view.addSubview(coverImage)
+        coverImage.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         view.addSubview(playerView)
         playerView.snp.makeConstraints { make in
@@ -44,7 +49,7 @@ class DetailViewController: UIViewController {
         
         setupManager()
         
-        MBProgressHUD.xnShowIndicatorMessage("dowloading...")
+        MBProgressHUD.xnShowIndicatorWithHideAfterYOffset("loading...", showView: self.view)
         
         if let name = try? battery?.video?.url.asURL().lastPathComponent {
             self.videoTask = download(sessionManager: appDelegate.sessionManager, url: battery?.video?.url, filename: "or_" + name)
@@ -62,25 +67,8 @@ class DetailViewController: UIViewController {
     func setupManager() {
         // 设置 manager 的回调
         sessionManager?.completion(handler: { [weak self] manager in
-            switch manager.status {
-            case .succeeded:
-                // 其他状态
-                myPrint("---- succeeded")
-            case .failed:
-                // 其他状态
-                myPrint("---- failed")
-            case .canceled:
-                // 其他状态
-                myPrint("---- canceled")
-            case .waiting:
-                // 其他状态
-                myPrint("---- waiting")
-            default:
-                // 其他状态
-                myPrint("---- 其他状态")
-            }
             
-            if manager.status == .succeeded {
+            if self?.videoTask?.status == .succeeded {
                 // 下载成功
                 if let name = try? self?.battery?.video?.url.asURL().lastPathComponent {
                     let pathStr = manager.cache.downloadFilePath + "/" + "or_" + name
@@ -94,15 +82,14 @@ class DetailViewController: UIViewController {
                     self?.playVideo()
                 }
             } else {
-//                MBProgressHUD.xnShowMessageWithHideAfter("download failed", timeInterval: 2)
                 // 其他状态
-                myPrint("---- download failed")
+                myPrint("---- \(String(describing: self?.videoTask?.status))")
             }
         })
     }
     
     func playVideo() {
-        MBProgressHUD.xnHideHUD()
+        MBProgressHUD.xnHideHUD(self.view)
         
         // path of the video in the bundle
         guard let pathStr = self.path else {
@@ -129,5 +116,26 @@ class DetailViewController: UIViewController {
         player.backgroundColor = .clear
         player.playerLayer.videoGravity = .resizeAspect
         return player
+    }()
+    
+    // MARK:- lazy
+    lazy var coverImage: UIImageView = {
+        let c = UIImageView()
+        c.contentMode = .scaleAspectFill
+        c.clipsToBounds = true
+        
+        if let url = battery?.previewImage?.url {
+            c.contentMode = .scaleAspectFit
+            c.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "placeholder")) { result in
+                switch result {
+                case .success(let res):
+                    c.contentMode = .scaleAspectFill
+                case .failure(let error):
+                    myPrint(error)
+                }
+            }
+        }
+        
+        return c
     }()
 }
