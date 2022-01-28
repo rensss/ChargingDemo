@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         requestList()
     }
     
-    // MARK:- func
+    // MARK: - func
     func requestList() {
         NetworkAPIRequest.request(.tags("zh", "1.24", false)) { result in
             switch result {
@@ -75,13 +75,11 @@ class ViewController: UIViewController {
 //                myPrint(jsonObject ?? "")
                 do {
                     self.model = try JSONDecoder().decode(Model.self, from: response.data)
-//                    let model = try JSONDecoder().decode(Model.self, from: jsonStr.data(using: .utf8)!)
-//                    let model = try JSONDecoder().decode(Model.self, from: response.data)
-//                    myPrint(model)
-//                    if let data = model.data.first {
-//                        self.dataArray = data.batteries
-                        self.collectionView.reloadData()
-//                    }
+                    self.collectionView.reloadData()
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.visibilityCell()
+                    }
                 } catch {
                     myPrint("---- \(error)")
                 }
@@ -92,8 +90,7 @@ class ViewController: UIViewController {
     }
     
     
-    // MARK:- lazy
-    
+    // MARK: - lazy
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical

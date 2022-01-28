@@ -58,12 +58,25 @@ class DetailViewController: UIViewController {
         }
     }
     
-    // MARK:- event
+    deinit {
+        myPrint("---- \(self) 销毁了！")
+    }
+    
+    // MARK:- notification
+    @objc func playerItemDidReachEnd(notification: Notification) {
+        if let playerItem = notification.object as? AVPlayerItem {
+            if playerItem == self.playerView.player?.currentItem {
+                playerItem.seek(to: CMTime.zero, completionHandler: nil)
+            }
+        }
+    }
+    
+    // MARK: - event
     @objc func btnClick(btn: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK:- func
+    // MARK: - func
     func setupManager() {
         // 设置 manager 的回调
         sessionManager?.completion(handler: { [weak self] manager in
@@ -104,13 +117,17 @@ class DetailViewController: UIViewController {
         videoPlayer?.playImmediately(atRate: 1)
         // setup the AVPlayer as the player
         playerView.player = videoPlayer
+        
+        videoPlayer?.actionAtItemEnd = .none
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: videoPlayer?.currentItem)
     }
     
     func stopVideo() {
         playerView.player?.pause()
     }
     
-    // MARK:- lazy
+    // MARK: - lazy
     lazy var playerView: PlayerView = {
         var player = PlayerView()
         player.backgroundColor = .clear
@@ -118,7 +135,6 @@ class DetailViewController: UIViewController {
         return player
     }()
     
-    // MARK:- lazy
     lazy var coverImage: UIImageView = {
         let c = UIImageView()
         c.contentMode = .scaleAspectFill

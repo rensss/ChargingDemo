@@ -31,7 +31,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK:- func
+    // MARK: - func
     func setupUI() {
         contentView.addSubview(coverImage)
         coverImage.snp.makeConstraints { make in
@@ -80,7 +80,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         return player
     }()
     
-    // MARK:- setter
+    // MARK: - setter
     var battery: Battery? {
         didSet {
             guard let name = try? battery?.previewVideo?.url.asURL().lastPathComponent else { return }
@@ -92,8 +92,8 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
                 coverImage.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "placeholder")) { result in
                     switch result {
                     case .success(let res):
-                        self.coverImage.contentMode = .scaleAspectFill
 //                        myPrint("---- \(String(describing: res.source.url?.absoluteString))")
+                        self.coverImage.contentMode = .scaleAspectFill
                         self.playerView.isHidden = true
                     case .failure(let error):
                         myPrint(error)
@@ -103,7 +103,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK:- lazy
+    // MARK: - lazy
     lazy var coverImage: UIImageView = {
         let c = UIImageView()
         c.contentMode = .scaleAspectFill

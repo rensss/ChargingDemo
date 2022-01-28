@@ -104,10 +104,14 @@ class JSONNull: Codable, Hashable {
     public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
         return true
     }
-
-    public var hashValue: Int {
-        return 0
+    
+    func hash(into hasher: inout Hasher) {
+        
     }
+    
+//    public var hashValue: Int {
+//        return 0
+//    }
 
     public init() {}
 

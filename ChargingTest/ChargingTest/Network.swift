@@ -65,9 +65,8 @@ extension RequestApi: TargetType {
             param["locale"] = locale
             param["appVersion"] = appVersion
             param["random"] = random
-//            return .requestParameters(parameters: param, encoding: URLEncoding.default)
-            return .requestCompositeParameters(bodyParameters: ["locale": locale, "appVersion": appVersion, "random": random], bodyEncoding: URLEncoding.httpBody, urlParameters: param)
-//            return .requestParameters(parameters: ["locale": locale, "appVersion": appVersion, "random": random], encoding: URLEncoding.default)
+//            return .requestParameters(parameters: param, encoding: URLEncoding.httpBody)
+            return .requestCompositeParameters(bodyParameters: ["" : ""], bodyEncoding: URLEncoding.httpBody, urlParameters: param)
         }
         
     }
