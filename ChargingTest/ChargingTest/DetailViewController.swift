@@ -59,9 +59,13 @@ class DetailViewController: UIViewController {
         MBProgressHUD.xnShowIndicatorWithHideAfterYOffset("loading...", showView: self.view)
         
         if let name = try? battery?.video?.url.asURL().lastPathComponent {
-            self.videoTask = download(sessionManager: appDelegate.sessionManager, url: battery?.video?.url, filename: "or_" + name)
+            self.videoTask = download(sessionManager: appDelegate.sessionManager,
+                                      url: battery?.video?.url,
+                                      filename: "or_" + name)
         } else if let name = try? battery?.previewVideo?.url.asURL().lastPathComponent {
-            self.videoTask = download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: "or_" + name)
+            self.videoTask = download(sessionManager: appDelegate.sessionManager,
+                                      url: battery?.previewVideo?.url,
+                                      filename: "or_" + name)
         }
     }
     
@@ -127,7 +131,10 @@ class DetailViewController: UIViewController {
         
         videoPlayer?.actionAtItemEnd = .none
         
-        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: videoPlayer?.currentItem)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(playerItemDidReachEnd(notification:)),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: videoPlayer?.currentItem)
     }
     
     func stopVideo() {
