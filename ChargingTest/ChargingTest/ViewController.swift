@@ -63,6 +63,25 @@ class ViewController: UIViewController {
         }
         
         requestList()
+        
+        let button = UIButton()
+        button.setTitle("Local", for: .normal)
+        button.backgroundColor = UIColor.withRandom()
+        button.addTarget(self, action: #selector(btnClick), for: .touchUpInside)
+        view.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.width.equalTo(100)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-80)
+        }
+    }
+    
+    // MARK: - event
+    @objc func btnClick() {
+        let vc = LocalAnimationViewController()
+        let nav = UINavigationController(rootViewController: vc)
+//        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
     }
     
     // MARK: - func

@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A7CEC5027B35602008D0523 /* charging_animation_6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4627B35602008D0523 /* charging_animation_6.mp4 */; };
+		1A7CEC5127B35602008D0523 /* charging_animation_1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4727B35602008D0523 /* charging_animation_1.mp4 */; };
+		1A7CEC5227B35602008D0523 /* charging_animation_4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4827B35602008D0523 /* charging_animation_4.mp4 */; };
+		1A7CEC5327B35602008D0523 /* charging_animation_2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4927B35602008D0523 /* charging_animation_2.mp4 */; };
+		1A7CEC5427B35602008D0523 /* charging_animation_3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4A27B35602008D0523 /* charging_animation_3.mp4 */; };
+		1A7CEC5527B35602008D0523 /* charging_animation_9.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4B27B35602008D0523 /* charging_animation_9.mp4 */; };
+		1A7CEC5627B35602008D0523 /* charging_animation_5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4C27B35602008D0523 /* charging_animation_5.mp4 */; };
+		1A7CEC5727B35602008D0523 /* charging_animation_10.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4D27B35602008D0523 /* charging_animation_10.mp4 */; };
+		1A7CEC5827B35602008D0523 /* charging_animation_8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4E27B35602008D0523 /* charging_animation_8.mp4 */; };
+		1A7CEC5927B35602008D0523 /* charging_animation_7.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1A7CEC4F27B35602008D0523 /* charging_animation_7.mp4 */; };
+		1A7CEC5B27B35A68008D0523 /* LocalAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CEC5A27B35A68008D0523 /* LocalAnimationViewController.swift */; };
 		1A8D0C262796CB7200D817DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D0C252796CB7200D817DF /* AppDelegate.swift */; };
 		1A8D0C282796CB7200D817DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D0C272796CB7200D817DF /* SceneDelegate.swift */; };
 		1A8D0C2A2796CB7200D817DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8D0C292796CB7200D817DF /* ViewController.swift */; };
@@ -35,6 +46,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A7CEC4627B35602008D0523 /* charging_animation_6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_6.mp4; sourceTree = "<group>"; };
+		1A7CEC4727B35602008D0523 /* charging_animation_1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_1.mp4; sourceTree = "<group>"; };
+		1A7CEC4827B35602008D0523 /* charging_animation_4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_4.mp4; sourceTree = "<group>"; };
+		1A7CEC4927B35602008D0523 /* charging_animation_2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_2.mp4; sourceTree = "<group>"; };
+		1A7CEC4A27B35602008D0523 /* charging_animation_3.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_3.mp4; sourceTree = "<group>"; };
+		1A7CEC4B27B35602008D0523 /* charging_animation_9.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_9.mp4; sourceTree = "<group>"; };
+		1A7CEC4C27B35602008D0523 /* charging_animation_5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_5.mp4; sourceTree = "<group>"; };
+		1A7CEC4D27B35602008D0523 /* charging_animation_10.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_10.mp4; sourceTree = "<group>"; };
+		1A7CEC4E27B35602008D0523 /* charging_animation_8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_8.mp4; sourceTree = "<group>"; };
+		1A7CEC4F27B35602008D0523 /* charging_animation_7.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = charging_animation_7.mp4; sourceTree = "<group>"; };
+		1A7CEC5A27B35A68008D0523 /* LocalAnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAnimationViewController.swift; sourceTree = "<group>"; };
 		1A8D0C222796CB7200D817DF /* ChargingTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChargingTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A8D0C252796CB7200D817DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A8D0C272796CB7200D817DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +129,7 @@
 				1A8D0C5227980DF700D817DF /* AnimationPlayCollectionViewCell.swift */,
 				1A8D0C292796CB7200D817DF /* ViewController.swift */,
 				1AA442F7279E804A00AD1943 /* DetailViewController.swift */,
+				1A7CEC5A27B35A68008D0523 /* LocalAnimationViewController.swift */,
 				1AB05BC227A271DC006148B8 /* MBProgressHUD+XNExtension.swift */,
 				1A8D0C3927980D7300D817DF /* animation */,
 				1A8D0C2B2796CB7200D817DF /* Main.storyboard */,
@@ -120,6 +143,16 @@
 		1A8D0C3927980D7300D817DF /* animation */ = {
 			isa = PBXGroup;
 			children = (
+				1A7CEC4727B35602008D0523 /* charging_animation_1.mp4 */,
+				1A7CEC4927B35602008D0523 /* charging_animation_2.mp4 */,
+				1A7CEC4A27B35602008D0523 /* charging_animation_3.mp4 */,
+				1A7CEC4827B35602008D0523 /* charging_animation_4.mp4 */,
+				1A7CEC4C27B35602008D0523 /* charging_animation_5.mp4 */,
+				1A7CEC4627B35602008D0523 /* charging_animation_6.mp4 */,
+				1A7CEC4F27B35602008D0523 /* charging_animation_7.mp4 */,
+				1A7CEC4E27B35602008D0523 /* charging_animation_8.mp4 */,
+				1A7CEC4B27B35602008D0523 /* charging_animation_9.mp4 */,
+				1A7CEC4D27B35602008D0523 /* charging_animation_10.mp4 */,
 				1A8D0C3A27980D7300D817DF /* Doge_Top.mp4 */,
 				1A8D0C3B27980D7300D817DF /* Water_Circle_Top.mp4 */,
 				1A8D0C3C27980D7300D817DF /* Fire_Bottom_Nat.mp4 */,
@@ -218,16 +251,26 @@
 				1A8D0C4A27980D7300D817DF /* Fuel_Top.mp4 in Resources */,
 				1A8D0C4C27980D7300D817DF /* Web_Blue_Energy.mp4 in Resources */,
 				1A8D0C4627980D7300D817DF /* Doge_Top.mp4 in Resources */,
+				1A7CEC5627B35602008D0523 /* charging_animation_5.mp4 in Resources */,
 				1A8D0C4D27980D7300D817DF /* Storm_Circle_Abs.mp4 in Resources */,
 				1A8D0C322796CB7600D817DF /* LaunchScreen.storyboard in Resources */,
+				1A7CEC5427B35602008D0523 /* charging_animation_3.mp4 in Resources */,
+				1A7CEC5327B35602008D0523 /* charging_animation_2.mp4 in Resources */,
 				1A8D0C4727980D7300D817DF /* Water_Circle_Top.mp4 in Resources */,
 				1A8D0C4F27980D7300D817DF /* Battery_Green_3d_Bat.mp4 in Resources */,
 				1A8D0C5127980D7300D817DF /* Apple_Pink_Top.mp4 in Resources */,
+				1A7CEC5227B35602008D0523 /* charging_animation_4.mp4 in Resources */,
 				1A8D0C5027980D7300D817DF /* Speed_Neon_Speedo.mp4 in Resources */,
+				1A7CEC5727B35602008D0523 /* charging_animation_10.mp4 in Resources */,
+				1A7CEC5827B35602008D0523 /* charging_animation_8.mp4 in Resources */,
 				1A8D0C4927980D7300D817DF /* Indi_Orange_Top.mp4 in Resources */,
 				1A8D0C4B27980D7300D817DF /* waterProgress.mov in Resources */,
 				1A8D0C2F2796CB7600D817DF /* Assets.xcassets in Resources */,
+				1A7CEC5027B35602008D0523 /* charging_animation_6.mp4 in Resources */,
 				1A8D0C2D2796CB7200D817DF /* Main.storyboard in Resources */,
+				1A7CEC5927B35602008D0523 /* charging_animation_7.mp4 in Resources */,
+				1A7CEC5527B35602008D0523 /* charging_animation_9.mp4 in Resources */,
+				1A7CEC5127B35602008D0523 /* charging_animation_1.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +328,7 @@
 				1A8D0C5327980DF700D817DF /* AnimationPlayCollectionViewCell.swift in Sources */,
 				1AA442FA279EA6D700AD1943 /* PlayerView.swift in Sources */,
 				1AB05BC327A271DC006148B8 /* MBProgressHUD+XNExtension.swift in Sources */,
+				1A7CEC5B27B35A68008D0523 /* LocalAnimationViewController.swift in Sources */,
 				1AA442F6279E50B700AD1943 /* Model.swift in Sources */,
 				1A8D0C262796CB7200D817DF /* AppDelegate.swift in Sources */,
 				1A8D0C282796CB7200D817DF /* SceneDelegate.swift in Sources */,

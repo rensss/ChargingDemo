@@ -19,10 +19,13 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     var videoPlayer: AVPlayer? = nil
     var task: Tiercel.DownloadTask?
     
+    // local animation
+    var localPath: String?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        self.backgroundColor = UIColor.withRandom()
+        self.backgroundColor = UIColor.withRandom()
         
         setupUI()
     }
@@ -47,6 +50,21 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     
     // MARK:-- play
     func playVideo() {
+        
+        if let localPath = localPath {
+            
+            if let path = Bundle.main.path(forResource: localPath, ofType: "mp4") {
+                // set the video player with the path
+                videoPlayer = AVPlayer(url: URL(fileURLWithPath: path))
+                // play the video now!
+                videoPlayer?.playImmediately(atRate: 1)
+                // setup the AVPlayer as the player
+                playerView.player = videoPlayer
+            }
+            
+            return
+        }
+        
         // path of the video in the bundle
         guard let string = try? self.battery?.previewVideo?.url.asURL().lastPathComponent else {
             myPrint("lastPathComponent not exist")
@@ -91,7 +109,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
                 coverImage.contentMode = .scaleAspectFit
                 coverImage.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "placeholder")) { result in
                     switch result {
-                    case .success(let res):
+                    case .success(_):
 //                        myPrint("---- \(String(describing: res.source.url?.absoluteString))")
                         self.coverImage.contentMode = .scaleAspectFill
                         self.playerView.isHidden = true

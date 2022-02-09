@@ -19,6 +19,7 @@ class DetailViewController: UIViewController {
     var path: String?
     var videoPlayer: AVPlayer? = nil
     var videoTask: Tiercel.DownloadTask?
+    var localPath: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,12 @@ class DetailViewController: UIViewController {
             make.top.equalToSuperview().offset(45)
             make.leading.equalToSuperview().offset(25)
             make.width.height.equalTo(40)
+        }
+        
+        if let localPath = localPath {
+            self.path = Bundle.main.path(forResource: localPath, ofType: "mp4")
+            self.playVideo()
+            return
         }
         
         sessionManager = appDelegate.sessionManager
