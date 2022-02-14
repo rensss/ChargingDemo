@@ -78,6 +78,7 @@ extension LocalAnimationViewController: UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(AnimationPlayCollectionViewCell.self), for: indexPath) as! AnimationPlayCollectionViewCell
         
+        cell.backgroundColor = UIColor.withRandom()
         cell.localPath = self.dataArray[indexPath.item]
         
         return cell

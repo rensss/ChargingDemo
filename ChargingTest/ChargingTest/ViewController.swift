@@ -28,7 +28,7 @@ let cellReuseridentifier = "cellReuseridentifier"
 
 public func download(sessionManager: SessionManager?, url: String?, filename: String?) -> Tiercel.DownloadTask? {
     if let url = url, let filename = filename {
-        myPrint("---- download url: " + url)
+//        myPrint("---- download url: " + url)
         return sessionManager?.download(url, fileName: filename)
         
 //        guard let downloadURLStrings = sessionManager?.tasks.map( { $0.url.absoluteString } ) else { return }
@@ -55,6 +55,10 @@ class ViewController: UIViewController {
         KingfisherManager.shared.downloader.downloadTimeout = 600
 //        KingfisherManager.shared.downloader.trustedHosts = ["appicon.cocomobi.com"]
 //        KingfisherManager.shared.cache.diskStorage.config.expiration = .days(7)
+        
+//        let a: String = "abc"
+//        let array = a.map { String($0) }
+//        myPrint(array)
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
@@ -113,7 +117,7 @@ class ViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: (screenWidth - 30)/2.0, height: 400)
+        layout.itemSize = CGSize(width: (screenWidth - 30)/2.0, height: 200)
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
         layout.sectionInset = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
@@ -204,7 +208,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func checkVisibilityOfCell(cell: AnimationPlayCollectionViewCell, indexPath: IndexPath) {
         if let cellRect = (collectionView.layoutAttributesForItem(at: indexPath)?.frame) {
             let completelyVisible = collectionView.bounds.contains(cellRect)
-            if completelyVisible {cell.playVideo()} else {cell.stopVideo()}
+            if completelyVisible {
+                cell.playVideo()
+            } else {
+                cell.stopVideo()
+            }
         }
     }
     

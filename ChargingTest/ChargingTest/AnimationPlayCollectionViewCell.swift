@@ -18,20 +18,28 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     // The AVPlayer
     var videoPlayer: AVPlayer? = nil
     var task: Tiercel.DownloadTask?
+    var currentTime: CMTime?
     
     // local animation
     var localPath: String?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.backgroundColor = UIColor.withRandom()
-        
         setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK:- notification
+    @objc func playerItemDidReachEnd(notification: Notification) {
+        if let playerItem = notification.object as? AVPlayerItem {
+            if playerItem == self.playerView.player?.currentItem {
+                playerItem.seek(to: CMTime.zero, completionHandler: nil)
+                self.playerView.player?.play()
+            }
+        }
     }
     
     // MARK: - func
@@ -47,19 +55,31 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    func play(path: String) {
+        // set the video player with the path
+        videoPlayer = AVPlayer(url: URL(fileURLWithPath: path))
+        // play the video now!
+        videoPlayer?.playImmediately(atRate: 1)
+        // setup the AVPlayer as the player
+        playerView.player = videoPlayer
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(playerItemDidReachEnd(notification:)),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: videoPlayer?.currentItem)
+    }
     
     // MARK:-- play
     func playVideo() {
         
+        if let currentTime = currentTime {
+            playerView.player?.seek(to: currentTime)
+            return
+        }
+        
         if let localPath = localPath {
-            
             if let path = Bundle.main.path(forResource: localPath, ofType: "mp4") {
-                // set the video player with the path
-                videoPlayer = AVPlayer(url: URL(fileURLWithPath: path))
-                // play the video now!
-                videoPlayer?.playImmediately(atRate: 1)
-                // setup the AVPlayer as the player
-                playerView.player = videoPlayer
+                play(path: path)
             }
             
             return
@@ -74,22 +94,18 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         self.playerView.isHidden = false
         
         let pathStr = appDelegate.sessionManager.cache.downloadFilePath + "/" + string
-        myPrint(pathStr)
-        
-        // set the video player with the path
-        videoPlayer = AVPlayer(url: URL(fileURLWithPath: pathStr))
-        // play the video now!
-        videoPlayer?.playImmediately(atRate: 1)
-        // setup the AVPlayer as the player
-        playerView.player = videoPlayer
+//        myPrint(pathStr)
+        play(path: pathStr)
         
 //        coverImage.image = nil
     }
     
     func stopVideo() {
         playerView.player?.pause()
+        currentTime = playerView.player?.currentTime()
     }
     
+    // MARK: - getter
     // The PlayerView
     var playerView: PlayerView = {
         var player = PlayerView()
@@ -101,6 +117,12 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
     // MARK: - setter
     var battery: Battery? {
         didSet {
+            
+            if let videoPlayer = videoPlayer {
+                videoPlayer.replaceCurrentItem(with: nil)
+                self.videoPlayer = nil
+            }
+            
             guard let name = try? battery?.previewVideo?.url.asURL().lastPathComponent else { return }
             
             task = download(sessionManager: appDelegate.sessionManager, url: battery?.previewVideo?.url, filename: name)
