@@ -15,6 +15,7 @@ import Tiercel
 
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
+let statusBarHeight = UIWindow.xnKeyWindow()?.windowScene?.statusBarManager?.statusBarFrame.height
 
 public func myPrint(_ items: Any..., filename: String = #file, function: String = #function, line: Int = #line) {
     #if DEBUG
@@ -48,6 +49,12 @@ class ViewController: UIViewController {
     var dataArray: [Battery]?
     var model: Model?
     
+    let headerViewHeight: CGFloat = 300.0
+    let categroyHeight: CGFloat = 45.0
+    
+    var isCanMianScrollView: Bool = true
+    var currentChildScrollView: ChildCollectionView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -60,9 +67,8 @@ class ViewController: UIViewController {
 //        let array = a.map { String($0) }
 //        myPrint(array)
         
-        view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -82,10 +88,15 @@ class ViewController: UIViewController {
     
     // MARK: - event
     @objc func btnClick() {
-        let vc = LocalAnimationViewController()
-        let nav = UINavigationController(rootViewController: vc)
-//        nav.modalPresentationStyle = .fullScreen
-        self.present(nav, animated: true, completion: nil)
+//        let vc = LocalAnimationViewController()
+//        let nav = UINavigationController(rootViewController: vc)
+////        nav.modalPresentationStyle = .fullScreen
+//        self.present(nav, animated: true, completion: nil)
+        
+        let newHome = NewHomeViewController()
+        newHome.model = self.model
+        newHome.modalPresentationStyle = .fullScreen
+        self.present(newHome, animated: true, completion: nil)
     }
     
     // MARK: - func
@@ -98,10 +109,10 @@ class ViewController: UIViewController {
 //                myPrint(jsonObject ?? "")
                 do {
                     self.model = try JSONDecoder().decode(Model.self, from: response.data)
-                    self.collectionView.reloadData()
+                    self.pageCollectionView.reloadData()
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.visibilityCell()
+//                        self.visibilityCell()
                     }
                 } catch {
                     myPrint("---- \(error)")
@@ -112,108 +123,198 @@ class ViewController: UIViewController {
         }
     }
     
-    
     // MARK: - lazy
-    lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: (screenWidth - 30)/2.0, height: 200)
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
-        layout.sectionInset = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
+    lazy var headerView: UIView = {
+        let h = UIView()
+        h.backgroundColor = .purple
+        return h
+    }()
+    
+    lazy var scrollView: RootScrollView = {
+        let s = RootScrollView()
+        s.delegate = self
+        s.showsVerticalScrollIndicator = false
         
-        let c = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        c.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        c.backgroundColor = .white
+        s.addSubview(headerView)
+        headerView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalTo(headerViewHeight)
+        }
+        
+        s.addSubview(pageCollectionView)
+        
+        s.contentSize = CGSize(width: screenWidth, height: (headerViewHeight + screenHeight) - categroyHeight - statusBarHeight)
+        
+        return s
+    }()
+    
+    lazy var pageCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: screenWidth, height: screenHeight - categroyHeight - statusBarHeight)
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        let c = UICollectionView(frame: CGRect(x: 0, y: headerViewHeight, width: screenWidth, height: screenHeight - categroyHeight - statusBarHeight), collectionViewLayout: layout)
         c.delegate = self
         c.dataSource = self
-        c.alwaysBounceVertical = true
-        c.register(AnimationPlayCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(AnimationPlayCollectionViewCell.self))
+        c.isPagingEnabled = true
+        c.backgroundColor = .white
+//        c.alwaysBounceHorizontal = true
+        c.showsHorizontalScrollIndicator = false
+        
+        c.register(PageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(PageCollectionViewCell.self))
         return c
     }()
     
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.model?.data.count ?? 0
-    }
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource , UIScrollViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.model?.data[section].batteries.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(AnimationPlayCollectionViewCell.self), for: indexPath) as! AnimationPlayCollectionViewCell
-        if let model = self.model?.data[indexPath.section].batteries[indexPath.item] {
-            cell.battery = model
+    // MARK: - UIScrollDelegate
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let bottomOffset = headerViewHeight - categroyHeight - statusBarHeight
+        
+        if scrollView == self.pageCollectionView {
+//            if let cell = self.pageCollectionView.visibleCells.first as? PageCollectionViewCell {
+//                let isScrollEnabled = self.currentChildScrollView?.isScrollEnabled ?? false
+//                self.currentChildScrollView = cell.collectionView
+//
+//                self.currentChildScrollView?.isScrollEnabled = isScrollEnabled
+//                self.scrollView.isScrollEnabled = !isScrollEnabled
+//            }
+        } else {
+            myPrint("---- \(bottomOffset) \(type(of: scrollView)):\(scrollView.contentOffset.y)")
         }
-        return cell
+        
+        if scrollView is RootScrollView {
+            self.currentChildScrollView?.isScrollEnabled = false
+            if scrollView.contentOffset.y >= bottomOffset {
+                scrollView.contentOffset = CGPoint(x: 0, y: bottomOffset)
+                self.scrollView.isScrollEnabled = false
+                self.currentChildScrollView?.isScrollEnabled = true
+            } else {
+                self.scrollView.isScrollEnabled = true
+            }
+        }
+        
+        if scrollView is ChildCollectionView && !self.scrollView.isScrollEnabled {
+            self.currentChildScrollView?.isScrollEnabled = true
+            if scrollView.contentOffset.y < 0 {
+                self.scrollView.isScrollEnabled = true
+                self.currentChildScrollView?.isScrollEnabled = false
+            } else {
+                
+            }
+        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = DetailViewController()
-        vc.modalPresentationStyle = .fullScreen
-        if let model = self.model?.data[indexPath.section].batteries[indexPath.item] {
-            vc.battery = model
-        }
-        self.present(vc, animated: true, completion: nil)
+    // 滑动结束的判断
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollViewDidEndScroll(scrollView)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        myPrint("---- UIScrollView停止滚动了")
-        
-        visibilityCell()
+        let stop = !scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
+        if stop {
+            scrollViewDidEndScroll(scrollView)
+        }
     }
     
     //isPagingEnabled 为 true 时不需要此方法配合
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        //停止拖拉，即手离开屏幕，但手抬起后，UIScrollView也停止滑动了。
-        if decelerate == false {
-            scrollViewDidEndDecelerating(scrollView)
+        let stop = scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
+        if stop {
+//            scrollViewDidEndScroll(scrollView)
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        myPrint("---- scrollViewDidScroll")
-    }
-    
-    func visibilityCell() {
-        let visibleCells = self.collectionView.indexPathsForVisibleItems
-            .sorted { top, bottom -> Bool in
-                return top.section < bottom.section || top.row < bottom.row
-            }.compactMap { indexPath -> UICollectionViewCell? in
-                return self.collectionView.cellForItem(at: indexPath)
-            }
-//        let cellCount = visibleCells.count
-        for item in visibleCells {
-            if let cell = item as? AnimationPlayCollectionViewCell {
-                cell.playVideo()
+    func scrollViewDidEndScroll(_ scrollView: UIScrollView) {
+        if scrollView == self.pageCollectionView {
+            if let cell = self.pageCollectionView.visibleCells.first as? PageCollectionViewCell {
+                let isScrollEnabled = self.currentChildScrollView?.isScrollEnabled ?? false
+                myPrint("---- isScrollEnabled: \(isScrollEnabled)")
+                self.currentChildScrollView = cell.collectionView
+                
+                self.currentChildScrollView?.isScrollEnabled = isScrollEnabled
+                self.scrollView.isScrollEnabled = !isScrollEnabled
             }
         }
-//        let indexPaths = self.collectionView.indexPathsForVisibleItems.sorted()
-//        for (index, item) in indexPaths.enumerated() {
-//            guard let firstCell = visibleCells[index] as? AnimationPlayCollectionViewCell else {return}
-////            checkVisibilityOfCell(cell: firstCell, indexPath: item)
-//            firstCell.playVideo()
-//        }
+    }
+    
+    // MARK: - collectionView delegate
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.model?.data.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(PageCollectionViewCell.self), for: indexPath) as! PageCollectionViewCell
         
-//        guard let firstCell = visibleCells.first as? AnimationPlayCollectionViewCell, let firstIndex = indexPaths.first else {return}
-//        checkVisibilityOfCell(cell: firstCell, indexPath: firstIndex)
-//        if cellCount == 1 {return}
-//        guard let lastCell = visibleCells.last as? AnimationPlayCollectionViewCell, let lastIndex = indexPaths.last else {return}
-//        checkVisibilityOfCell(cell: lastCell, indexPath: lastIndex)
-    }
-    
-    func checkVisibilityOfCell(cell: AnimationPlayCollectionViewCell, indexPath: IndexPath) {
-        if let cellRect = (collectionView.layoutAttributesForItem(at: indexPath)?.frame) {
-            let completelyVisible = collectionView.bounds.contains(cellRect)
-            if completelyVisible {
-                cell.playVideo()
-            } else {
-                cell.stopVideo()
-            }
+        cell.model = self.model?.data[indexPath.item]
+        cell.collectionView.delegate = self
+        
+        if self.currentChildScrollView == nil {
+            self.currentChildScrollView = cell.collectionView
+            cell.collectionView.isScrollEnabled = false
+            self.scrollView.isScrollEnabled = true
         }
+        
+        return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let vc = DetailViewController()
+//        vc.modalPresentationStyle = .fullScreen
+//        if let model = self.model?.batteries[indexPath.item] {
+//            vc.battery = model
+//        }
+//        self.present(vc, animated: true, completion: nil)
+    }
+    
+    
+    
+    // MARK: - video 播放
+    func visibilityCell() {
+//        let visibleCells = self.collectionView.indexPathsForVisibleItems
+//            .sorted { top, bottom -> Bool in
+//                return top.section < bottom.section || top.row < bottom.row
+//            }.compactMap { indexPath -> UICollectionViewCell? in
+//                return self.collectionView.cellForItem(at: indexPath)
+//            }
+////        let cellCount = visibleCells.count
+//        for item in visibleCells {
+//            if let cell = item as? AnimationPlayCollectionViewCell {
+//                cell.playVideo()
+//            }
+//        }
+////        let indexPaths = self.collectionView.indexPathsForVisibleItems.sorted()
+////        for (index, item) in indexPaths.enumerated() {
+////            guard let firstCell = visibleCells[index] as? AnimationPlayCollectionViewCell else {return}
+//////            checkVisibilityOfCell(cell: firstCell, indexPath: item)
+////            firstCell.playVideo()
+////        }
+//
+////        guard let firstCell = visibleCells.first as? AnimationPlayCollectionViewCell, let firstIndex = indexPaths.first else {return}
+////        checkVisibilityOfCell(cell: firstCell, indexPath: firstIndex)
+////        if cellCount == 1 {return}
+////        guard let lastCell = visibleCells.last as? AnimationPlayCollectionViewCell, let lastIndex = indexPaths.last else {return}
+////        checkVisibilityOfCell(cell: lastCell, indexPath: lastIndex)
+    }
+    
+//    func checkVisibilityOfCell(cell: AnimationPlayCollectionViewCell, indexPath: IndexPath) {
+//        if let cellRect = (collectionView.layoutAttributesForItem(at: indexPath)?.frame) {
+//            let completelyVisible = collectionView.bounds.contains(cellRect)
+//            if completelyVisible {
+//                cell.playVideo()
+//            } else {
+//                cell.stopVideo()
+//            }
+//        }
+//    }
 }

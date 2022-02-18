@@ -13,7 +13,7 @@ target 'ChargingTest' do
   pod 'Moya', '~> 13.0.1'
   pod 'Kingfisher', '~> 7.0.0'
   pod 'SwiftyJSON', '~> 5.0.0'
-#  pod 'MZDownloadManager'
   pod 'Tiercel'
+  pod 'SegementSlide', '3.0.1'
   
 end
