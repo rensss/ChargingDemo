@@ -1,0 +1,6 @@
+framework module XNiOSTeamModuleSwift {
+  umbrella header "XNiOSTeamModuleSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -93,10 +93,22 @@ class ViewController: UIViewController {
 ////        nav.modalPresentationStyle = .fullScreen
 //        self.present(nav, animated: true, completion: nil)
         
-        let newHome = NewHomeViewController()
-        newHome.model = self.model
-        newHome.modalPresentationStyle = .fullScreen
-        self.present(newHome, animated: true, completion: nil)
+//        let newHome = NewHomeViewController()
+//        newHome.model = self.model
+//        newHome.modalPresentationStyle = .fullScreen
+//        self.present(newHome, animated: true, completion: nil)
+        
+//        let newCollectionVC = CollectionViewViewController()
+////        newCollectionVC.model = model
+//        let nav = UINavigationController(rootViewController: newCollectionVC)
+//        nav.modalPresentationStyle = .fullScreen
+//        self.present(nav, animated: true, completion: nil)
+        
+        let gkVC = GKDemoTestViewController()
+        gkVC.model = model
+        let nav = UINavigationController(rootViewController: gkVC)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
     }
     
     // MARK: - func
@@ -242,6 +254,14 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource ,
                 self.scrollView.isScrollEnabled = !isScrollEnabled
             }
         }
+    }
+    
+    func checkScrollEnable(rootScroll: UIScrollView, childScroll: UIScrollView) -> Bool {
+        let bottomOffset = headerViewHeight - categroyHeight - statusBarHeight
+        
+        
+        
+        return false
     }
     
     // MARK: - collectionView delegate

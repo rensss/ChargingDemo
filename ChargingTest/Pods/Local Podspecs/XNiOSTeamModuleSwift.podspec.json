@@ -1,0 +1,99 @@
+{
+  "name": "XNiOSTeamModuleSwift",
+  "version": "1.0.0",
+  "summary": "A short description of XNiOSTeamModuleSwift.",
+  "description": "test adsdkdemo desc",
+  "homepage": "https://github.com/KKMobile/iOS_Team",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "RoberLucky": "lyx411326@163.com"
+  },
+  "source": {
+    "git": "https://github.com/KKMobile/iOS_Team.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "static_framework": true,
+  "frameworks": "UIKit",
+  "subspecs": [
+    {
+      "name": "Extension",
+      "dependencies": {
+        "MBProgressHUD": [
+
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "Foundation",
+          "source_files": "ExtensionDemo/Swift/Extension/Foundation/*"
+        },
+        {
+          "name": "UIKit",
+          "source_files": "ExtensionDemo/Swift/Extension/UIKit/*"
+        }
+      ]
+    },
+    {
+      "name": "Utils",
+      "source_files": "ExtensionDemo/Utils/*"
+    },
+    {
+      "name": "IAPUtils",
+      "dependencies": {
+        "Firebase/Core": [
+
+        ],
+        "Firebase/Analytics": [
+
+        ],
+        "FBSDKCoreKit": [
+
+        ],
+        "Adjust": [
+
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "IAPUtils",
+          "source_files": "IAPUtilsDemo/Swift/IAPUtils/*"
+        },
+        {
+          "name": "AnalyticsTool",
+          "dependencies": {
+            "XNiOSTeamModuleSwift/Utils": [
+
+            ]
+          },
+          "source_files": "IAPUtilsDemo/Swift/AnalyticsTool/*",
+          "exclude_files": "IAPUtilsDemo/Swift/AnalyticsTool/EncryptUtil.{h,m}"
+        }
+      ]
+    },
+    {
+      "name": "LanguageUtils",
+      "source_files": "LanguageUtilsDemo/Swift/LanguageUtils/*"
+    },
+    {
+      "name": "PostAdjustManager",
+      "source_files": "PostAdjustManagerDemo/Swift/PostAdjustManager/*",
+      "dependencies": {
+        "SVProgressHUD": [
+
+        ],
+        "PureLayout": [
+
+        ],
+        "Adjust": [
+
+        ]
+      }
+    }
+  ]
+}

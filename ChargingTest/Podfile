@@ -15,5 +15,10 @@ target 'ChargingTest' do
   pod 'SwiftyJSON', '~> 5.0.0'
   pod 'Tiercel'
   pod 'SegementSlide', '3.0.1'
+  pod 'JXSegmentedView', '1.3.0'
+  pod 'JXPagingView/Paging', '2.1.2'
+  pod 'XNiOSTeamModuleSwift/Extension', :git=>'git@github.com:KKMobile/iOS_Team.git'
+  pod 'GKPageScrollView/Swift', '1.7.0'
+  pod 'GKPageSmoothView/Swift', '1.7.0'
   
 end

@@ -1,37 +1,30 @@
 //
-//  ContentViewController.swift
+//  ContentTableViewCell.swift
 //  ChargingTest
 //
-//  Created by Rzk on 2022/2/17.
+//  Created by Rzk on 2022/2/21.
 //
 
 import UIKit
-import SegementSlide
 
-class ContentViewController: UIViewController, SegementSlideContentScrollViewDelegate {
+class ContentTableViewCell: UITableViewCell {
     
     let itemSpacing = 13.0
     let padding = 16.0
     let itemWidth = 165.0
     let itemHeight = 287.0
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupUI()
-    }
-    
-    // MARK: - func
-    func setupUI() {
-        view.addSubview(collectionView)
+        contentView.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
-    // MARK: - SegementSlideContentScrollViewDelegate
-    @objc var scrollView: UIScrollView {
-        return self.collectionView
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - setter
@@ -53,16 +46,17 @@ class ContentViewController: UIViewController, SegementSlideContentScrollViewDel
         layout.minimumLineSpacing = itemSpacing
         layout.minimumInteritemSpacing = itemSpacing
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
-        layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
+//        layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
 //        layout.sectionHeadersPinToVisibleBounds = true
         
-        let c = ChildCollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        let c = ChildCollectionView(frame: self.bounds, collectionViewLayout: layout)
         
-//        c.delegate = self
+        c.delegate = self
         c.dataSource = self
         c.backgroundColor = .clear
         c.contentInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
-        c.alwaysBounceVertical = false
+//        c.alwaysBounceVertical = true
+//        c.isScrollEnabled = false
         
         c.register(AnimationPlayCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(AnimationPlayCollectionViewCell.self))
         c.register(SectionHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SectionHeaderCollectionReusableView.self))
@@ -71,7 +65,7 @@ class ContentViewController: UIViewController, SegementSlideContentScrollViewDel
     
 }
 
-extension ContentViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ContentTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize{
         return CGSize(width: screenWidth, height: 50)
     }
@@ -103,9 +97,5 @@ extension ContentViewController: UICollectionViewDelegate, UICollectionViewDataS
             cell.battery = model
         }
         return cell
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
     }
 }
