@@ -22,12 +22,10 @@ class GKDemoTestViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         view.addSubview(pageScrollView)
-        
         pageScrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
         
-//        self.titleDataSource.reloadData(selectedIndex: 0)
     }
     
     // MARK: - event
@@ -46,18 +44,9 @@ class GKDemoTestViewController: UIViewController {
     }
     
     // MARK: - lazy
-    lazy var titleDataSource: JXSegmentedTitleDataSource  = {
-        let t = JXSegmentedTitleDataSource()
-        t.titleNormalColor = UIColor.gray
-        t.titleSelectedColor = UIColor.red
-        t.titleNormalFont = UIFont.systemFont(ofSize: 15.0)
-        t.titleSelectedFont = UIFont.systemFont(ofSize: 15.0)
-        t.reloadData(selectedIndex: 0)
-        return t
-    }()
-    
     lazy var pageScrollView: GKPageScrollView = {
         let p = GKPageScrollView(delegate: self)
+        p.isShowInFooter = true
         return p
     }()
     
@@ -99,8 +88,17 @@ class GKDemoTestViewController: UIViewController {
         return childVCs
     }()
     
+    lazy var titleDataSource: JXSegmentedTitleDataSource  = {
+        let t = JXSegmentedTitleDataSource()
+        t.titleNormalColor = UIColor.gray
+        t.titleSelectedColor = UIColor.red
+        t.titleNormalFont = UIFont.systemFont(ofSize: 15.0)
+        t.titleSelectedFont = UIFont.systemFont(ofSize: 15.0)
+        t.reloadData(selectedIndex: 0)
+        return t
+    }()
+    
     lazy var segmentedView: JXSegmentedView = {
-        
         var segmentedView = JXSegmentedView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: categroyHeight))
         segmentedView.delegate = self
         segmentedView.dataSource = titleDataSource
@@ -140,33 +138,27 @@ class GKDemoTestViewController: UIViewController {
         for (index, vc) in self.childVCs.enumerated() {
             self.addChild(vc)
             scrollView.addSubview(vc.view)
-            
             vc.view.frame = CGRect(x: CGFloat(index) * scrollW, y: 0, width: scrollW, height: scrollH)
         }
         scrollView.contentSize = CGSize(width: CGFloat(self.childVCs.count) * scrollW, height: 0)
         
         return scrollView
     }()
-
+    
 }
 
 extension GKDemoTestViewController: GKPageScrollViewDelegate {
     func headerView(in pageScrollView: GKPageScrollView) -> UIView {
-        self.headerView
+        headerView
     }
     
     func pageView(in pageScrollView: GKPageScrollView) -> UIView {
-        return pageView
+        pageView
     }
     
     func listView(in pageScrollView: GKPageScrollView) -> [GKPageListViewDelegate] {
-        return childVCs
+        childVCs
     }
-    
-    func numberOfLists(in pageScrollView: GKPageScrollView) -> Int {
-        return childVCs.count
-    }
-    
 }
 
 extension GKDemoTestViewController: UIScrollViewDelegate {
