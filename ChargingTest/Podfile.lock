@@ -2,7 +2,6 @@ PODS:
   - Alamofire (4.9.1)
   - GKPageScrollView/Swift (1.7.0)
   - GKPageSmoothView/Swift (1.7.0)
-  - JXPagingView/Paging (2.1.2)
   - JXSegmentedView (1.3.0)
   - Kingfisher (7.0.0)
   - MBProgressHUD (1.1.0)
@@ -28,9 +27,8 @@ PODS:
     - MBProgressHUD
 
 DEPENDENCIES:
-  - GKPageScrollView/Swift
-  - GKPageSmoothView/Swift
-  - JXPagingView/Paging (= 2.1.2)
+  - GKPageScrollView/Swift (= 1.7.0)
+  - GKPageSmoothView/Swift (= 1.7.0)
   - JXSegmentedView (= 1.3.0)
   - Kingfisher (~> 7.0.0)
   - MBProgressHUD (~> 1.1.0)
@@ -48,7 +46,6 @@ SPEC REPOS:
     - Alamofire
     - GKPageScrollView
     - GKPageSmoothView
-    - JXPagingView
     - JXSegmentedView
     - Kingfisher
     - MBProgressHUD
@@ -74,7 +71,6 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   GKPageScrollView: a12bfd280ca89dc40f60398f2ce1d841ad7ee9e3
   GKPageSmoothView: f7a0895412e05a9f80e434211015d441065b0191
-  JXPagingView: 90924b364a2ff7e94db534fad1fa50925ff69ee4
   JXSegmentedView: fec0d335355b6e019c494fe2e030bde8a36d2df6
   Kingfisher: 5efc54fec3980f92354898532e562cc17f31efb4
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -88,6 +84,6 @@ SPEC CHECKSUMS:
   Tiercel: c0a73f876a72800333b15f4e7e48791f4ad21e90
   XNiOSTeamModuleSwift: 37fab459bb003585205d61921d0a7ce07f0a192a
 
-PODFILE CHECKSUM: 966072725a161909fed6a20f90d1a0729e6b649e
+PODFILE CHECKSUM: 64d16b54121a855b0e264f7de778ee9357098cea
 
 COCOAPODS: 1.11.2

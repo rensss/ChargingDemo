@@ -22,13 +22,13 @@ class GKDemoTestChildView: UIViewController {
         setupUI()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        var frame = self.view.frame
-        frame.size = (self.view.superview?.bounds.size)!
-        self.view.frame = frame
-    }
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//
+//        var frame = self.view.frame
+//        frame.size = (self.view.superview?.bounds.size)!
+//        self.view.frame = frame
+//    }
     
     // MARK: - func
     func setupUI() {
@@ -56,20 +56,16 @@ class GKDemoTestChildView: UIViewController {
         layout.itemSize = CGSize(width: width, height: height)
         layout.minimumLineSpacing = itemSpacing
         layout.minimumInteritemSpacing = itemSpacing
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
-        layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
-        layout.sectionHeadersPinToVisibleBounds = true
         
-        let c = ChildCollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        let c = ChildCollectionView(frame: .zero, collectionViewLayout: layout)
         
         c.delegate = self
         c.dataSource = self
         c.backgroundColor = .clear
         c.contentInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
-//        c.alwaysBounceVertical = false
         
         c.register(AnimationPlayCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(AnimationPlayCollectionViewCell.self))
-        c.register(SectionHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SectionHeaderCollectionReusableView.self))
+        
         return c
     }()
 }
@@ -94,24 +90,6 @@ extension GKDemoTestChildView: GKPageListViewDelegate {
 }
 
 extension GKDemoTestChildView: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize{
-        return CGSize(width: screenWidth, height: 50)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        var header: SectionHeaderCollectionReusableView! = SectionHeaderCollectionReusableView()
-        if kind == UICollectionView.elementKindSectionHeader {
-            
-            header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: NSStringFromClass(SectionHeaderCollectionReusableView.self), for: indexPath) as? SectionHeaderCollectionReusableView
-            
-            header.titleLabel.text = self.model?.name
-        }
-        
-        return header
-    }
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }

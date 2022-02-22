@@ -2,7 +2,6 @@ ${PODS_ROOT}/Target Support Files/Pods-ChargingTest/Pods-ChargingTest-frameworks
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/GKPageScrollView/GKPageScrollView.framework
 ${BUILT_PRODUCTS_DIR}/GKPageSmoothView/GKPageSmoothView.framework
-${BUILT_PRODUCTS_DIR}/JXPagingView/JXPagingView.framework
 ${BUILT_PRODUCTS_DIR}/JXSegmentedView/JXSegmentedView.framework
 ${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework
 ${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework

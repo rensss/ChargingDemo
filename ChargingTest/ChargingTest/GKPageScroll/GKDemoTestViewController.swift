@@ -26,6 +26,8 @@ class GKDemoTestViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
+        
+        pageScrollView.reloadData()
     }
     
     // MARK: - event
@@ -124,13 +126,14 @@ class GKDemoTestViewController: UIViewController {
     
     lazy var contentScrollView: UIScrollView = {
         let scrollW = screenWidth
-        let scrollH = screenHeight - statusBarHeight - categroyHeight
+        let scrollH = screenHeight - statusBarHeight - categroyHeight - (UIWindow.xnKeyWindow()?.safeAreaInsets.bottom ?? 0)
         
         let scrollView = UIScrollView(frame: CGRect(x: 0, y: categroyHeight, width: scrollW, height: scrollH))
         scrollView.delegate = self
         scrollView.isPagingEnabled = true
         scrollView.bounces = false
-//        scrollView.gk_openGestureHandle = true
+        scrollView.showsHorizontalScrollIndicator = false
+        
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .never
         }
