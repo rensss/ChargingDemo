@@ -73,7 +73,7 @@ class GKDemoTestChildView: UIViewController {
     }()
 }
 
-extension GKDemoTestChildView {
+extension GKDemoTestChildView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let callBack = scrollCallBack {
             callBack(scrollView)
