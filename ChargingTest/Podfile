@@ -13,7 +13,7 @@ target 'ChargingTest' do
   pod 'Moya', '~> 13.0.1'
   pod 'Kingfisher', '~> 7.0.0'
   pod 'SwiftyJSON', '~> 5.0.0'
-  pod 'Tiercel'
+  pod 'Tiercel', '3.2.5'
   pod 'SegementSlide', '3.0.1'
   pod 'JXSegmentedView', '1.3.0'
 #  pod 'JXPagingView/Paging', '2.1.2'

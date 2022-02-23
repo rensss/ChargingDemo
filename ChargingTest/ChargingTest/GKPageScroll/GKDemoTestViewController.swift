@@ -24,7 +24,6 @@ class GKDemoTestViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        
         pageScrollView.reloadData()
     }
     
@@ -46,6 +45,7 @@ class GKDemoTestViewController: UIViewController {
     // MARK: - lazy
     lazy var pageScrollView: GKPageScrollView = {
         let p = GKPageScrollView(delegate: self)
+        p.isLazyLoadList = true
         p.ceilPointHeight = statusBarHeight
         return p
     }()
@@ -67,34 +67,13 @@ class GKDemoTestViewController: UIViewController {
         return imgView
     }()
     
-    lazy var pageView: UIView = {
-        let pageView = UIView()
-        pageView.addSubview(self.segmentedView)
-        pageView.addSubview(self.contentScrollView)
-        return pageView
-    }()
-    
-    lazy var childVCs: [GKDemoTestChildView] = {
-        var childVCs = [GKDemoTestChildView]()
-        
-        if let model = model {
-            for (index, datum) in model.data.enumerated() {
-                let child = GKDemoTestChildView()
-                child.model = datum
-                childVCs.append(child)
-            }
-        }
-        
-        return childVCs
-    }()
-    
     lazy var titleDataSource: JXSegmentedTitleDataSource  = {
         let t = JXSegmentedTitleDataSource()
         t.titleNormalColor = UIColor.gray
         t.titleSelectedColor = UIColor.red
         t.titleNormalFont = UIFont.systemFont(ofSize: 15.0)
         t.titleSelectedFont = UIFont.systemFont(ofSize: 15.0)
-//        t.reloadData(selectedIndex: 0)
+        t.reloadData(selectedIndex: 0)
         return t
     }()
     
@@ -109,7 +88,7 @@ class GKDemoTestViewController: UIViewController {
         lineView.verticalOffset = ADAPTATIONRATIO * 2.0
         segmentedView.indicators = [lineView]
         
-        segmentedView.contentScrollView = self.contentScrollView
+        segmentedView.contentScrollView = self.pageScrollView.listContainerView.collectionView
         
         let btmLineView = UIView()
         btmLineView.backgroundColor = UIColor.xnRandomColor()
@@ -121,44 +100,33 @@ class GKDemoTestViewController: UIViewController {
         
         return segmentedView
     }()
-    
-    lazy var contentScrollView: UIScrollView = {
-        let scrollW = screenWidth
-        let scrollH = screenHeight - statusBarHeight - categroyHeight - (UIWindow.xnKeyWindow()?.safeAreaInsets.bottom ?? 0)
-        
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: categroyHeight, width: scrollW, height: scrollH))
-        scrollView.delegate = self
-        scrollView.isPagingEnabled = true
-        scrollView.bounces = false
-        scrollView.showsHorizontalScrollIndicator = false
-        
-        if #available(iOS 11.0, *) {
-            scrollView.contentInsetAdjustmentBehavior = .never
-        }
-        
-        for (index, vc) in self.childVCs.enumerated() {
-            self.addChild(vc)
-            scrollView.addSubview(vc.view)
-            vc.view.frame = CGRect(x: CGFloat(index) * scrollW, y: 0, width: scrollW, height: scrollH)
-        }
-        scrollView.contentSize = CGSize(width: CGFloat(self.childVCs.count) * scrollW, height: 0)
-        
-        return scrollView
-    }()
-    
 }
 
 extension GKDemoTestViewController: GKPageScrollViewDelegate {
+    
+    func shouldLazyLoadList(in pageScrollView: GKPageScrollView) -> Bool {
+        true
+    }
+    
     func headerView(in pageScrollView: GKPageScrollView) -> UIView {
         headerView
     }
     
-    func pageView(in pageScrollView: GKPageScrollView) -> UIView {
-        pageView
+    func segmentedView(in pageScrollView: GKPageScrollView) -> UIView {
+        segmentedView
     }
     
-    func listView(in pageScrollView: GKPageScrollView) -> [GKPageListViewDelegate] {
-        childVCs
+    func numberOfLists(in pageScrollView: GKPageScrollView) -> Int {
+        self.model?.data.count ?? 1
+    }
+    
+    func pageScrollView(_ pageScrollView: GKPageScrollView, initListAtIndex index: Int) -> GKPageListViewDelegate {
+        let child = GKDemoTestChildView()
+        if let model = self.model?.data[index] {
+            child.model = model
+        }
+        self.addChild(child)
+        return child
     }
 }
 

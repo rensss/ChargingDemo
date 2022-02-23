@@ -83,6 +83,10 @@ extension GKDemoTestChildView {
 
 extension GKDemoTestChildView: GKPageListViewDelegate {
     
+    func listView() -> UIView {
+        return self.view
+    }
+    
     func listScrollView() -> UIScrollView {
         return self.collectionView
     }
