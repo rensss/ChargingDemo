@@ -106,9 +106,8 @@ class ViewController: UIViewController {
         
         let gkVC = GKDemoTestViewController()
         gkVC.model = model
-        let nav = UINavigationController(rootViewController: gkVC)
-        nav.modalPresentationStyle = .fullScreen
-        self.present(nav, animated: true, completion: nil)
+        gkVC.modalPresentationStyle = .fullScreen
+        self.present(gkVC, animated: true, completion: nil)
     }
     
     // MARK: - func

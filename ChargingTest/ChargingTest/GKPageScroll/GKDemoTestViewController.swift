@@ -19,8 +19,6 @@ class GKDemoTestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
         view.addSubview(pageScrollView)
         pageScrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()

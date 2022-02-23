@@ -108,4 +108,13 @@ extension GKDemoTestChildView: UICollectionViewDelegate, UICollectionViewDataSou
         }
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.modalPresentationStyle = .fullScreen
+        if let model = self.model?.batteries[indexPath.item] {
+            vc.battery = model
+        }
+        self.present(vc, animated: true, completion: nil)
+    }
 }
