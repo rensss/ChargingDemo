@@ -48,7 +48,7 @@ class GKDemoTestViewController: UIViewController {
     // MARK: - lazy
     lazy var pageScrollView: GKPageScrollView = {
         let p = GKPageScrollView(delegate: self)
-        p.isShowInFooter = true
+        p.ceilPointHeight = statusBarHeight
         return p
     }()
     
@@ -96,7 +96,7 @@ class GKDemoTestViewController: UIViewController {
         t.titleSelectedColor = UIColor.red
         t.titleNormalFont = UIFont.systemFont(ofSize: 15.0)
         t.titleSelectedFont = UIFont.systemFont(ofSize: 15.0)
-        t.reloadData(selectedIndex: 0)
+//        t.reloadData(selectedIndex: 0)
         return t
     }()
     

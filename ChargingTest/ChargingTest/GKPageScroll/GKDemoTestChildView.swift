@@ -34,7 +34,9 @@ class GKDemoTestChildView: UIViewController {
     func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(padding)
+            make.trailing.equalToSuperview().offset(-padding)
         }
     }
     
@@ -62,7 +64,8 @@ class GKDemoTestChildView: UIViewController {
         c.delegate = self
         c.dataSource = self
         c.backgroundColor = .clear
-        c.contentInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
+        c.showsVerticalScrollIndicator = false
+//        c.contentInset = UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
         
         c.register(AnimationPlayCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(AnimationPlayCollectionViewCell.self))
         
