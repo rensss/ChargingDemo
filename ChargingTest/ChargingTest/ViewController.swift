@@ -255,14 +255,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource ,
         }
     }
     
-    func checkScrollEnable(rootScroll: UIScrollView, childScroll: UIScrollView) -> Bool {
-        let bottomOffset = headerViewHeight - categroyHeight - statusBarHeight
-        
-        
-        
-        return false
-    }
-    
     // MARK: - collectionView delegate
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -276,7 +268,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource ,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(PageCollectionViewCell.self), for: indexPath) as! PageCollectionViewCell
         
         cell.model = self.model?.data[indexPath.item]
-        cell.collectionView.delegate = self
+//        cell.collectionView.delegate = self
         
         if self.currentChildScrollView == nil {
             self.currentChildScrollView = cell.collectionView

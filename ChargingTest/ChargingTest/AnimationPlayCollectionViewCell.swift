@@ -94,7 +94,7 @@ class AnimationPlayCollectionViewCell: UICollectionViewCell {
         self.playerView.isHidden = false
         
         let pathStr = appDelegate.sessionManager.cache.downloadFilePath + "/" + string
-//        myPrint(pathStr)
+        myPrint(pathStr)
         play(path: pathStr)
         
 //        coverImage.image = nil

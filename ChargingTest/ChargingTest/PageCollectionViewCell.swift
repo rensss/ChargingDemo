@@ -106,7 +106,78 @@ extension PageCollectionViewCell: UICollectionViewDelegate, UICollectionViewData
         return cell
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.modalPresentationStyle = .fullScreen
+        if let model = self.model?.batteries[indexPath.item] {
+            vc.battery = model
+        }
+        self.viewController().present(vc, animated: true, completion: nil)
     }
+    
+    // 滑动结束的判断
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        r_ScrollViewDidEndScroll(scrollView)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let stop = !scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
+        if stop {
+            r_ScrollViewDidEndScroll(scrollView)
+        }
+    }
+    
+    //isPagingEnabled 为 true 时不需要此方法配合
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let stop = scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
+        if stop {
+            r_ScrollViewDidEndScroll(scrollView)
+        }
+    }
+    
+    func r_ScrollViewDidEndScroll(_ scrollView: UIScrollView) {
+        if scrollView == self.collectionView {
+            visibilityCell()
+        }
+    }
+    
+    // MARK: - video 播放
+    func visibilityCell() {
+        let visibleCells = self.collectionView.indexPathsForVisibleItems
+            .sorted { top, bottom -> Bool in
+                return top.section < bottom.section || top.row < bottom.row
+            }.compactMap { indexPath -> UICollectionViewCell? in
+                return self.collectionView.cellForItem(at: indexPath)
+            }
+//        let cellCount = visibleCells.count
+        for item in visibleCells {
+            if let cell = item as? AnimationPlayCollectionViewCell {
+                cell.playVideo()
+            }
+        }
+//        let indexPaths = self.collectionView.indexPathsForVisibleItems.sorted()
+//        for (index, item) in indexPaths.enumerated() {
+//            guard let firstCell = visibleCells[index] as? AnimationPlayCollectionViewCell else {return}
+////            checkVisibilityOfCell(cell: firstCell, indexPath: item)
+//            firstCell.playVideo()
+//        }
+
+//        guard let firstCell = visibleCells.first as? AnimationPlayCollectionViewCell, let firstIndex = indexPaths.first else {return}
+//        checkVisibilityOfCell(cell: firstCell, indexPath: firstIndex)
+//        if cellCount == 1 {return}
+//        guard let lastCell = visibleCells.last as? AnimationPlayCollectionViewCell, let lastIndex = indexPaths.last else {return}
+//        checkVisibilityOfCell(cell: lastCell, indexPath: lastIndex)
+    }
+    
+    func checkVisibilityOfCell(cell: AnimationPlayCollectionViewCell, indexPath: IndexPath) {
+        if let cellRect = (collectionView.layoutAttributesForItem(at: indexPath)?.frame) {
+            let completelyVisible = collectionView.bounds.contains(cellRect)
+            if completelyVisible {
+                cell.playVideo()
+            } else {
+                cell.stopVideo()
+            }
+        }
+    }
+    
 }
